@@ -20,18 +20,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.rr.ocorrencias.model.Ocorrencia;
+
 @RestController
 @RequestMapping("ocorrencias")
 public class OcorrenciaController {
 
 	@GetMapping("{fragment}")
-	public ResponseEntity<?> getOcurrencies(@PathVariable("fragment") String fragment)
+	public ResponseEntity<Ocorrencia> getOcurrencies(@PathVariable("fragment") String fragment)
 			throws InterruptedException, ExecutionException {
 		ExecutorService executor = Executors.newFixedThreadPool(7);
 		List<Future<Integer>> futures = new ArrayList<>();
 
+		long now = System.currentTimeMillis();
 		for (int i = 1; i <= 7; i++) {
-			FindInFileOcurrenciesCallable c = new FindInFileOcurrenciesCallable(fragment, i);
+			FindOcurrenciesInFileCallable c = new FindOcurrenciesInFileCallable(fragment, i);
 			futures.add(executor.submit(c));
 		}
 
@@ -39,16 +42,18 @@ public class OcorrenciaController {
 		for (Future<Integer> f : futures) {
 			sum += f.get();
 		}
-
-		return new ResponseEntity<Integer>(sum, HttpStatus.OK);
+		
+		long duration = System.currentTimeMillis() - now;
+		Ocorrencia occurrency = new Ocorrencia(sum, duration);		
+		return new ResponseEntity<Ocorrencia>(occurrency, HttpStatus.OK);
 	}
 
-	private class FindInFileOcurrenciesCallable implements Callable<Integer> {
+	private class FindOcurrenciesInFileCallable implements Callable<Integer> {
 
 		private String fragment;
 		private Integer index;
 
-		public FindInFileOcurrenciesCallable(String fragment, Integer index) {
+		public FindOcurrenciesInFileCallable(String fragment, Integer index) {
 			this.fragment = fragment;
 			this.index = index;
 		}
