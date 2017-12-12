@@ -1,5 +1,6 @@
 package br.com.rr.ocorrencias.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,9 +55,11 @@ public class OcorrenciaController {
 
 		@Override
 		public Integer call() throws Exception {
-			Path filePath = Paths.get(".", "words_" + index + ".csv");
+			ClassLoader classLoader = getClass().getClassLoader();
+			Path filePath = Paths.get(classLoader.getResource(".").toURI().getPath(), "words_" + index + ".csv");
 
-			Long count = Files.readAllLines(filePath).parallelStream()
+			Long count = Files.readAllLines(filePath, StandardCharsets.ISO_8859_1)
+					.parallelStream()
 					.map(line -> line.split("\\s+"))
 					.flatMap(Arrays::stream).parallel()
 					.filter(w -> w.indexOf(fragment) >= 0).count();
