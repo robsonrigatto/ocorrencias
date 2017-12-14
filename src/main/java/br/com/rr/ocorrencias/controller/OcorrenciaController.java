@@ -63,7 +63,7 @@ public class OcorrenciaController {
 			ClassLoader classLoader = getClass().getClassLoader();
 			Path filePath = Paths.get(classLoader.getResource(".").toURI().getPath(), "words_" + index + ".csv");
 
-			Long count = Files.readAllLines(filePath, StandardCharsets.ISO_8859_1)
+			Long count = Files.readAllLines(filePath, StandardCharsets.UTF_8)
 					.parallelStream()
 					.map(line -> line.split("\\s+"))
 					.flatMap(Arrays::stream).parallel()
