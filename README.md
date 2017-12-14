@@ -41,8 +41,11 @@ Antes de subir a aplicação, é necessário criar um diretório que contém os 
 Para subir a aplicação é possível fazer de 2 maneiras, em formato standalone ou via docker.
 
 # Standalone
+
 > mvn spring-boot:run
 
 # Docker
+
 > docker stop $(docker ps -q --filter ancestor=robsonrigatto/ocorrencias-image)
+
 > docker run -p 8080:8080 -v /tmp/files:/tmp/files -t robsonrigatto/ocorrencias-image
