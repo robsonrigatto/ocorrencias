@@ -36,7 +36,7 @@ Caso queira fazer o build da aplicação Spring boot:
 
 > 4 - Atualize a imagem local com *docker pull robsonrigatto/ocorrencias-image*
 
-Antes de subir a aplicação, é necessário criar um diretório que contém os arquivos (nesse caso, coloquei em */tmp/files/*)
+OBS: **Antes de subir a aplicação**, é necessário criar um diretório que contém os arquivos (nesse caso, coloquei em */tmp/files/*)
 
 Para subir a aplicação é possível fazer de 2 maneiras, em formato standalone ou via docker.
 
